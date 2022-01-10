@@ -2,7 +2,7 @@ import numpy as np
 import sys
 import os
 sys.path.append(os.pardir)
-from dataset.mnist import load_mnist
+from dataset.mnist import load_mnist  # mnist 데이터셋을 읽어오는 함수
 
 # 4.2.3 미니배치 학습
 # 훈련 데이터 전체에 대한 오차함수
@@ -11,12 +11,13 @@ from dataset.mnist import load_mnist
 # 훈련 데이터 전체에 대한 손실 함수를 계산하기에는 시간이 오래걸리기 때문에
 # 일부를 추려 전체의 근사치로 이용할 수 있다.
 (x_train, t_train), (x_test, t_test) = \
-    load_mnist(normalize=True, one_hot_label=False)
+    load_mnist(normalize=True, one_hot_label=False) 
+""" 호출할 때 원-핫 인코딩으로 즉, 정답 위치의 원소만 1이고 나머지는 0인 배열을 얻는다."""
 
 print(x_train.shape)  # (60000, 784)
 print(t_train.shape)  # 원-핫 인코딩 된 정답 레이블 (60000, 10)
 
-# 무작위 10개 추출
+# 무작위 10개 추출 -> 넘파이의 np.random.choice() 함수를 사용. """미니배치"""
 train_size = x_train.shape[0]
 batch_size = 10
 batch_mask = np.random.choice(train_size, batch_size)
