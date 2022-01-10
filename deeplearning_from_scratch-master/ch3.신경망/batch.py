@@ -12,7 +12,7 @@ def get_data():
     return x_test, t_test 
 
 def init_network(): 
-    with open("sample_weight.pkl", 'rb', "utf-8") as f:
+    with open("sample_weight.pkl", 'rb') as f:
         network = pickle.load(f)
     return network
 
