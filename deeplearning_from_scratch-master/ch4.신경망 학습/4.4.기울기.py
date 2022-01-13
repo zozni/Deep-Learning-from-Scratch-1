@@ -5,9 +5,9 @@ import matplotlib.pylab as plt
 # 앞 절에서 x0, x1에 대한 편미분을 변수별로 따로 계산했음.
 # x0, x1의 편미분을 동시에 계산하고 싶다면?
 # x0 = 3, x1 = 4일 때 (x0, x1) 양쪽의 편미분을 묶어 벡터로 정리한 것을 기울기gradient라고 한다.
-def numerical_gradient(f, x):
+def numerical_gradient(f, x):   # -> 동작방식은 변수가 하나일때의 수치미분과 거의 같다.
     h = 1e-4
-    grad = np.zeros_like(x)  # x와 형상이 같은 배열을 생성
+    grad = np.zeros_like(x)  # x와 형상이 같고 그 원소가 모두 0인 배열을 생성
 
     for idx in range(x.size):
         tmp_val = x[idx]
@@ -34,6 +34,7 @@ def function_2(x):
 print(numerical_gradient(function_2, np.array([3.0, 4.0])))  # [ 6.  8.]
 print(numerical_gradient(function_2, np.array([0.0, 2.0])))  # [ 0.  4.]
 print(numerical_gradient(function_2, np.array([3.0, 0.0])))  # [ 6.  0.]
+""" 기울기가 가리키는 쪽은 각 장소에서 함수의 출력값을 가장 크게 줄이는 방향이다. """
 
 # 4.4.1 경사법(경사 하강법)
 # x0 = x0 - η*∂f/∂x0
@@ -52,8 +53,8 @@ def gradient_descent(f, init_x, lr=0.01, step_num=100):
 
     for i in range(step_num):
         x_history.append(x.copy())
-        grad = numerical_gradient(f, x)
-        x -= lr * grad
+        grad = numerical_gradient(f, x) # 함수의 기울기는 이걸로 구함.
+        x -= lr * grad                  # 그 기울기에 학습률을 곱한값으로 갱신하는 처리를 step_num번 반복한다.
 
     return x, np.array(x_history)
 
