@@ -5,8 +5,9 @@ from common.util import im2col, col2im
 
 
 class Relu:
-    def __init__(self):
-        self.mask = None
+    def __init__(self):  # mask라는 인스턴스 변수를 가진다.
+        self.mask = None  # mask는 T/F로 구성된 넘파이 배열로 순전파의 입력인 x의 원소값이 0이하면 True,
+                          # 0보다 큰원소는 False로 유지한다.
 
     def forward(self, x):
         self.mask = (x <= 0)
@@ -22,8 +23,8 @@ class Relu:
         return dx
 
 
-class Sigmoid:
-    def __init__(self):
+class Sigmoid:    # 순전파의 출력을 인스턴스 변수 out에 보관했다가 
+    def __init__(self):  # 역전파 계산때 그 값을 사용한다.
         self.out = None
 
     def forward(self, x):
