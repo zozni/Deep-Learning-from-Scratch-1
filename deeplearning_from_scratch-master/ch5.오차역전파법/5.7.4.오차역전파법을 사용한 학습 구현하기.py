@@ -5,6 +5,7 @@ sys.path.append(os.pardir)
 from dataset.mnist import load_mnist
 from two_layer_net import TwoLayerNet
 
+""" 기울기를 오차역전파법으로 구하는 코드 """
 # 데이터 읽기
 (x_train, t_train), (x_test, t_test) = \
     load_mnist(normalize=True, one_hot_label=True)
@@ -30,7 +31,7 @@ for i in range(iters_num):
     x_batch = x_train[batch_mask]
     t_batch = t_train[batch_mask]
 
-    # 오차역전파법으로 기울기 계산
+    # 오차역전파법으로 기울기 계산 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     grad = network.gradient(x_batch, t_batch)
 
     # 매개변수 갱신

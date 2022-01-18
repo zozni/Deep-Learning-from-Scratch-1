@@ -53,7 +53,8 @@ accuracy(x, t) : 정확도를 구한다.
 numerical_gradient(x, t) : 가중치 매개변수의 기울기를 수치 미분으로 구함(앞 장과 같음)
 gradient(x, t) : 가중치 매개변수의 기울기를 오차역전파법으로 구함
 """
-
+### 계층을 사용함으로써 인식 결과를 얻는 처리 predict()와 기울기를 구하는 처리 gradient() 계층의 
+### 전파만으로 동작이 이루어진다.
 
 class TwoLayerNet:
     def __init__(self, input_size, hidden_size, output_size,
@@ -67,8 +68,9 @@ class TwoLayerNet:
             np.random.randn(hidden_size, output_size)
         self.params['b2'] = np.zeros(output_size)
 
-        # 계층 생성
-        self.layers = OrderedDict()
+        # 계층 생성  
+        """ 중요 """
+        self.layers = OrderedDict() # 순서가 있는 딕셔너리. 순서를 기억.
         self.layers['Affine1'] = \
             Affine(self.params['W1'], self.params['b1'])
         self.layers['Relu1'] = Relu()
@@ -107,12 +109,12 @@ class TwoLayerNet:
 
         return grads
 
-    def gradient(self, x, t):
+    def gradient(self, x, t): # 순전파때는 추가한 순서대로 각 계층의 forward() 메소드를 호출하기만 하면 된다.
         # 순전파
         self.loss(x, t)
 
         # 역전파
-        dout = 1
+        dout = 1  # 역전파 때는 계층을 반대 순서로 호출하기만 하면 된다.
         dout = self.lastLayer.backward(dout)
 
         layers = list(self.layers.values())
@@ -147,19 +149,19 @@ class TwoLayerNet:
 이 작업을 기울기 확인gradient check라고 한다.
 """
 if __name__ == '__main__':
-    # 데이터 읽기
+    # MNIST 데이터 읽기
     (x_train, t_train), (x_test, t_test) = \
         load_mnist(normalize=True, one_hot_label=True)
 
     network = TwoLayerNet(input_size=784, hidden_size=50, output_size=10)
 
-    x_batch = x_train[:3]
-    t_batch = t_train[:3]
+    x_batch = x_train[:3]    # 훈련셋 일부를 수치미분으로 구한 기울기와 
+    t_batch = t_train[:3]    # 오차역전파법으로 구한 기울기의 오차를 확인한다.
 
     grad_numerical = network.numerical_gradient(x_batch, t_batch)
     grad_backprop = network.gradient(x_batch, t_batch)
 
-    # 각 가중치의 차이의 절댓값을 구한 후, 그 절댓값들의 평균을 낸다.
+    # 각 가중치의 차이의 절댓값을 구한 후, 그 절댓값들의 평균을 낸다. 그게 오차가 된다.
     for key in grad_numerical.keys():
         diff = np.average(np.abs(grad_backprop[key] - grad_numerical[key]))
         print(key + ":" + str(diff))
