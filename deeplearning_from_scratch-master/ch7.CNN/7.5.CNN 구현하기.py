@@ -32,6 +32,7 @@ class SimpleConvNet:
                                (conv_output_size/2))
 
         # 1층의 합성곱 계층과 2, 3층의 완전연결 계층의 가중치와 편향 생성
+        # 가중치 매개변수를 초기화하는 부분
         self.params = {}
         self.params['W1'] = weight_init_std * \
             np.random.randn(filter_num, input_dim[0], filter_size, filter_size)

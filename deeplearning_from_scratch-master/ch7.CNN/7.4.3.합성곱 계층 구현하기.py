@@ -54,6 +54,7 @@ class Convolution:
         out_w = int(1 + (W + 2 * self.pad - FW) / self.stride)
 
         # 입력 데이터와 필터를 2차원 배열로 전개하고 내적한다.
+        # 각 필터 블록을 1줄로 펼친다. reshape에 -1을 지정하면 다차원 배열의 원소 수가 변환 후에도 똑같이 유지되도록 적절히 묶어준다.
         col = im2col(x, FH, FW, self.stride, self.pad)
         col_W = self.W.reshape(FN, -1).T  # 필터 전개
         out = np.dot(col, col_W) + self.b
